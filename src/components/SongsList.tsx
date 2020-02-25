@@ -47,7 +47,7 @@ const SongsList: FC<SongsListProps> = ({ songsDB }) => {
                 .filter(section => section.data.length > 0);
         }
         setSongsData(newSongsData);
-    }, [filter, filterMode]);
+    }, [filter, filterMode, songsDB]);
 
     useEffect(() => {
         if (songsData.length > 0) {

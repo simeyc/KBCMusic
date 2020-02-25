@@ -133,7 +133,12 @@
                 "number": 37,
                 "title": "When the roll is called up yonder"
             },
-            { "key": 1423, "number": 38, "title": "Blessed Redeemer" },
+            {
+                "key": 1423,
+                "number": 38,
+                "title": "Down at the cross",
+                "altTitle": "Glory to His name"
+            },
             {
                 "key": 1424,
                 "number": 39,
@@ -229,17 +234,22 @@
                 "number": 68,
                 "title": "Jesus shall reign where'er the sun"
             },
-            { "key": 1454, "number": 69, "title": "God the uncreated One" },
-            { "key": 1455, "number": 70, "title": "The Lord is my salvation" },
-            { "key": 1456, "number": 71, "title": "Christ is enough" },
             {
-                "key": 1457,
-                "number": 72,
+                "key": 1454,
+                "number": 69,
                 "title": "Outside the city wall",
-                "altTitle": "Eli Lama Sabachthani"
+                "altTitle": "Eli lama sabachthani"
             },
+            {
+                "key": 1455,
+                "number": 70,
+                "title": "God the uncreated one",
+                "altTitle": "King forevermore"
+            },
+            { "key": 1456, "number": 71, "title": "The Lord is my salvation" },
+            { "key": 1457, "number": 72, "title": "Who am I" },
             { "key": 1458, "number": 73, "title": "My lighthouse" },
-            { "key": 1459, "number": 74, "title": "Down at the cross" },
+            { "key": 1459, "number": 74, "title": "Christ is enough" },
             { "key": 1460, "number": 75, "title": "Sons and daughters" },
             {
                 "key": 1461,
@@ -295,7 +305,30 @@
                 "altTitle": "At the cross"
             },
             { "key": 1478, "number": 93, "title": "Goodness of God" },
-            { "key": 1479, "number": 94, "title": "Sovereign over us" }
+            { "key": 1479, "number": 94, "title": "Sovereign over us" },
+            { "key": 1480, "number": 95, "title": "I've been redeemed" },
+            {
+                "key": 1481,
+                "number": 96,
+                "title": "Nothing but the blood",
+                "altTitle": "What can wash away my sin?"
+            },
+            {
+                "key": 1482,
+                "number": 97,
+                "title": "Come, Thou long-expected Jesus"
+            },
+            { "key": 1483, "number": 98, "title": "Good and gracious King" },
+            {
+                "key": 1484,
+                "number": 99,
+                "title": "O Lord, my rock and my redeemer"
+            },
+            {
+                "key": 1485,
+                "number": 100,
+                "title": "All creatures if our God and king"
+            }
         ]
     },
     {
