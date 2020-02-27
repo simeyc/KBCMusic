@@ -1,11 +1,17 @@
 export type SongData = {
-  key: number;
-  number: number;
-  title: string;
-  altTitle?: string;
+    key: number;
+    number: number;
+    title: string;
+    altTitle?: string;
 };
 
 export type SongsDB = {
-	title: string;
-	data: SongData[];
+    title: string;
+    data: SongData[];
 }[];
+
+export interface SongsController {
+    loading: boolean;
+    songs: SongsDB;
+    fetchSongs: () => void;
+}

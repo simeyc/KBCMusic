@@ -5,25 +5,25 @@ import HeaderArea from './HeaderArea';
 import TitleBar from './TitleBar';
 import SearchBar from './SearchBar';
 import { colors, fontSizes } from '../constants';
-import { SongsDB } from '../types/SongData';
+import { SongsDB, SongsController } from '../types';
 import SeparatorLine from './SeparatorLine';
 import PlaceholderView from './PlaceholderView';
 
 interface SongsListProps {
-    songsDB: SongsDB;
+    songsController: SongsController;
 }
 
-const SongsList: FC<SongsListProps> = ({ songsDB }) => {
+const SongsList: FC<SongsListProps> = ({ songsController }) => {
     const [filter, setFilter] = useState<string>(''),
         [filterMode, setFilterMode] = useState<boolean>(false),
-        [songsData, setSongsData] = useState(songsDB),
+        [songsData, setSongsData] = useState(songsController.songs),
         toggleFilterMode = () => setFilterMode(!filterMode),
         listRef = useRef(null);
 
     useEffect(() => {
         let newSongsData: SongsDB = [];
         if (!filterMode) {
-            newSongsData = songsDB;
+            newSongsData = songsController.songs;
         } else if (!!filter) {
             const filterRegex = new RegExp(
                     `(^|[ -])${filter
@@ -33,7 +33,7 @@ const SongsList: FC<SongsListProps> = ({ songsDB }) => {
                     'i'
                 ),
                 filterIsNumber = /^[1-9][0-9]*$/.test(filter);
-            newSongsData = songsDB
+            newSongsData = songsController.songs
                 .map(section => ({
                     title: section.title,
                     data: section.data.filter(
@@ -47,7 +47,7 @@ const SongsList: FC<SongsListProps> = ({ songsDB }) => {
                 .filter(section => section.data.length > 0);
         }
         setSongsData(newSongsData);
-    }, [filter, filterMode, songsDB]);
+    }, [filter, filterMode, songsController.songs]);
 
     useEffect(() => {
         if (songsData.length > 0) {
@@ -74,6 +74,11 @@ const SongsList: FC<SongsListProps> = ({ songsDB }) => {
                         title="KBC Music"
                         actions={[
                             {
+                                name: 'Sync',
+                                icon: 'md-sync',
+                                callback: songsController.fetchSongs
+                            },
+                            {
                                 name: 'Search',
                                 icon: 'md-search',
                                 callback: toggleFilterMode
@@ -84,6 +89,10 @@ const SongsList: FC<SongsListProps> = ({ songsDB }) => {
             </HeaderArea>
             <SectionList
                 ref={listRef}
+                {...(songsController.loading && {
+                    style: { opacity: 0.5 },
+                    refreshing: true
+                })}
                 renderItem={({ item }) => (
                     <TouchableNativeFeedback
                         background={TouchableNativeFeedback.Ripple(

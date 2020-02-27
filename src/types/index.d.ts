@@ -1,1 +1,1 @@
-export { SongsDB, SongData } from './SongData';
+export { SongsDB, SongData, SongsController } from './SongData';
