@@ -1,5 +1,12 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
-import { View, SectionList, TouchableNativeFeedback, Text } from 'react-native';
+import {
+    View,
+    SectionList,
+    TouchableNativeFeedback,
+    Text,
+    Clipboard,
+    ToastAndroid
+} from 'react-native';
 import SongItem from './SongItem';
 import HeaderArea from './HeaderArea';
 import TitleBar from './TitleBar';
@@ -87,47 +94,67 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
                     />
                 )}
             </HeaderArea>
-            <SectionList
-                ref={listRef}
-                {...(songsController.loading && {
-                    style: { opacity: 0.5 },
-                    refreshing: true
-                })}
-                renderItem={({ item }) => (
-                    <TouchableNativeFeedback
-                        background={TouchableNativeFeedback.Ripple(
-                            colors.LIGHT_GREY
-                        )}
-                        onPress={() => console.log(`clicked: "${item.title}"`)}>
-                        <View style={{ backgroundColor: colors.WHITE }}>
-                            <SongItem data={item} filter={filter} />
-                        </View>
-                    </TouchableNativeFeedback>
-                )}
-                renderSectionHeader={({ section: { title, data } }) => (
-                    <Text
-                        style={{
-                            fontWeight: 'bold',
-                            fontSize: fontSizes.MEDIUM,
-                            backgroundColor: colors.LIGHT_GREY,
-                            color: colors.GREY,
-                            padding: 5,
-                            paddingLeft: 10
-                        }}>
-                        {`${title} (${data.length})`}
-                    </Text>
-                )}
-                sections={songsData}
-                keyExtractor={item => String(item.key)}
-                ItemSeparatorComponent={SeparatorLine}
-                {...(songsData.length > 0 && {
-                    ListFooterComponent: SeparatorLine
-                })}
-                stickySectionHeadersEnabled={true}
-                ListEmptyComponent={
-                    <PlaceholderView text="No songs found" iconName="md-sad" />
-                }
-            />
+            {songsData.length > 0 ? (
+                <SectionList
+                    ref={listRef}
+                    {...(songsController.loading && {
+                        style: { opacity: 0.5 },
+                        refreshing: true
+                    })}
+                    renderItem={({ item, section }) => (
+                        <TouchableNativeFeedback
+                            background={TouchableNativeFeedback.Ripple(
+                                colors.LIGHT_GREY
+                            )}
+                            onPress={() => {
+                                songsData;
+                                Clipboard.setString(
+                                    `*${
+                                        section.titleAbbr
+                                    } ${item.number.toString()}* ${item.title}`
+                                );
+                                ToastAndroid.show(
+                                    `"${
+                                        section.titleAbbr
+                                    } ${item.number.toString()} ${
+                                        item.title
+                                    }" copied to clipboard`,
+                                    ToastAndroid.SHORT
+                                );
+                                console.log(`clicked: "${item.title}"`);
+                            }}>
+                            <View style={{ backgroundColor: colors.WHITE }}>
+                                <SongItem data={item} filter={filter} />
+                            </View>
+                        </TouchableNativeFeedback>
+                    )}
+                    renderSectionHeader={({ section: { title, data } }) => (
+                        <Text
+                            style={{
+                                fontWeight: 'bold',
+                                fontSize: fontSizes.MEDIUM,
+                                backgroundColor: colors.LIGHT_GREY,
+                                color: colors.GREY,
+                                padding: 5,
+                                paddingLeft: 10
+                            }}>
+                            {!filter
+                                ? title
+                                : `${title} (${data.length.toString()} result` +
+                                  (data.length === 1 ? ')' : 's)')}
+                        </Text>
+                    )}
+                    sections={songsData}
+                    keyExtractor={item => String(item.key)}
+                    ItemSeparatorComponent={SeparatorLine}
+                    {...(songsData.length > 0 && {
+                        ListFooterComponent: SeparatorLine
+                    })}
+                    stickySectionHeadersEnabled={true}
+                />
+            ) : !!filter ? (
+                <PlaceholderView text="No results found" iconName="md-sad" />
+            ) : null}
         </>
     );
 };

@@ -7,6 +7,7 @@ export type SongData = {
 
 export type SongsDB = {
     title: string;
+    titleAbbr: string;
     data: SongData[];
 }[];
 
