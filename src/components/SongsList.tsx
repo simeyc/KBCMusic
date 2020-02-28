@@ -104,7 +104,7 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
                         </View>
                     </TouchableNativeFeedback>
                 )}
-                renderSectionHeader={({ section: { title, songs } }) => (
+                renderSectionHeader={({ section: { title, data } }) => (
                     <Text
                         style={{
                             fontWeight: 'bold',
@@ -114,7 +114,7 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
                             padding: 5,
                             paddingLeft: 10
                         }}>
-                        {`${title} (${songs.length()})`}
+                        {`${title} (${data.length})`}
                     </Text>
                 )}
                 sections={songsData}

@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SongData } from '../types/SongData';
 import { colors, fontSizes } from '../constants';
-import { matchesPattern } from '@babel/types';
 
 interface SongItemProps {
     data: SongData;

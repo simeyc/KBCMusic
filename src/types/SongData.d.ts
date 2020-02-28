@@ -7,7 +7,7 @@ export type SongData = {
 
 export type SongsDB = {
     title: string;
-    songs: SongData[];
+    data: SongData[];
 }[];
 
 export interface SongsController {
