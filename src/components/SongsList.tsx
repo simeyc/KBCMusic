@@ -5,7 +5,9 @@ import {
     TouchableNativeFeedback,
     Text,
     Clipboard,
-    ToastAndroid
+    ToastAndroid,
+    ActivityIndicator,
+    Modal
 } from 'react-native';
 import SongItem from './SongItem';
 import HeaderArea from './HeaderArea';
@@ -15,6 +17,7 @@ import { colors, fontSizes } from '../constants';
 import { SongsDB, SongsController } from '../types';
 import SeparatorLine from './SeparatorLine';
 import PlaceholderView from './PlaceholderView';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface SongsListProps {
     songsController: SongsController;
@@ -43,6 +46,7 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
             newSongsData = songsController.songs
                 .map(section => ({
                     title: section.title,
+                    titleAbbr: section.titleAbbr,
                     data: section.data.filter(
                         song =>
                             (filterIsNumber &&
@@ -97,10 +101,7 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
             {songsData.length > 0 ? (
                 <SectionList
                     ref={listRef}
-                    {...(songsController.loading && {
-                        style: { opacity: 0.5 },
-                        refreshing: true
-                    })}
+                    refreshing={songsController.loading}
                     renderItem={({ item, section }) => (
                         <TouchableNativeFeedback
                             background={TouchableNativeFeedback.Ripple(
@@ -114,14 +115,9 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
                                     } ${item.number.toString()}* ${item.title}`
                                 );
                                 ToastAndroid.show(
-                                    `"${
-                                        section.titleAbbr
-                                    } ${item.number.toString()} ${
-                                        item.title
-                                    }" copied to clipboard`,
+                                    'Song copied to clipboard!',
                                     ToastAndroid.SHORT
                                 );
-                                console.log(`clicked: "${item.title}"`);
                             }}>
                             <View style={{ backgroundColor: colors.WHITE }}>
                                 <SongItem data={item} filter={filter} />
@@ -155,6 +151,26 @@ const SongsList: FC<SongsListProps> = ({ songsController }) => {
             ) : !!filter ? (
                 <PlaceholderView text="No results found" iconName="md-sad" />
             ) : null}
+            {songsController.loading && (
+                <Modal animationType="fade" visible transparent>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: colors.MODAL_BACKGROUND
+                        }}>
+                        <ActivityIndicator
+                            size="large"
+                            color={colors.LIGHT_GREY}
+                        />
+                    </View>
+                </Modal>
+            )}
         </>
     );
 };

@@ -5,7 +5,8 @@ export enum colors {
     DARK_RED = '#c92828',
     GREY = '#6e6e6e',
     LIGHT_GREY = '#e0e0e0',
-    HIGHLIGHT = '#e9ff32'
+    HIGHLIGHT = '#e9ff32',
+    MODAL_BACKGROUND = 'rgba(0, 0, 0, 0.6)'
 }
 
 export enum fontSizes {

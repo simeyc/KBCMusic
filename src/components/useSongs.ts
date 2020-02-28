@@ -36,7 +36,7 @@ const useSongs: () => SongsController = () => {
                     setSongs(data);
                     ToastAndroid.show(
                         'Songs are up to date!',
-                        ToastAndroid.LONG
+                        ToastAndroid.SHORT
                     );
                 })
                 .catch(() => {
