@@ -13,6 +13,7 @@
     "lodash.debounce": "^4.0.8",
     "react": "16.9.0",
     "react-native": "0.61.2",
+    "react-native-bootsplash": "^1.2.1",
     "react-native-ionicons": "^4.6.3"
   },
   "devDependencies": {

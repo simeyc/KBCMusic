@@ -17,8 +17,5 @@ export enum fontSizes {
 }
 
 export enum storageKeys {
-    STORAGE_VERSION = 'STORAGE_VERSION',
-    SONGS_DB = 'SONGS_DB'
+    SONGS_DB = '@storageKey0'
 }
-
-export const STORAGE_VERSION = '0';

@@ -7,11 +7,11 @@ export type SongData = {
 
 export type SongsDB = {
     title: string;
-    data: SongData[];
+    songs: SongData[];
 }[];
 
 export interface SongsController {
     loading: boolean;
     songs: SongsDB;
-    fetchSongs: () => void;
+    fetchSongs: () => Promise<void>;
 }

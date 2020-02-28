@@ -6,5 +6,12 @@
         <item name="android:textColor">#000000</item>
         <item name="android:windowBackground">@color/background</item>
     </style>
+ 
+    <!-- Required for bootsplash -->
+    <!-- BootTheme should inherit from AppTheme -->
+    <style name="BootTheme" parent="AppTheme">
+        <!-- set bootsplash.xml as activity background -->
+        <item name="android:background">@drawable/bootsplash</item>
+    </style>
 
 </resources>

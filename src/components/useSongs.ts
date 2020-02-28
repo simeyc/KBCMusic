@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SongsController, SongsDB } from '../types';
 import { storageKeys } from '../constants';
 import AsyncStorage from '@react-native-community/async-storage';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, Alert } from 'react-native';
 
 const useSongs: () => SongsController = () => {
     const [loading, setLoading] = useState(true),
@@ -10,28 +10,18 @@ const useSongs: () => SongsController = () => {
         storeSongs = async (data: string) => {
             try {
                 await AsyncStorage.setItem(storageKeys.SONGS_DB, data);
-            } catch (e) {
-                ToastAndroid.show(
-                    'Failed to save songs to storage.',
-                    ToastAndroid.LONG
-                );
-            }
+            } catch (e) {}
         },
         loadSongs = async () => {
             let data = null;
             try {
                 data = await AsyncStorage.getItem(storageKeys.SONGS_DB);
-            } catch (e) {
-                ToastAndroid.show(
-                    'Failed to load songs from storage.',
-                    ToastAndroid.LONG
-                );
-            }
+            } catch (e) {}
             return data !== null ? data : '[]';
         },
         fetchSongs = () => {
             setLoading(true);
-            fetch(
+            return fetch(
                 'https://github.com/simeyc/KBCMusic/raw/master/public/songsDB.json'
             )
                 .then(response => response.json())
@@ -53,16 +43,13 @@ const useSongs: () => SongsController = () => {
                     loadSongs().then(data => {
                         setSongs(JSON.parse(data));
                     });
-                    ToastAndroid.show(
-                        'Failed to fetch updates. Songs may be out of date!',
-                        ToastAndroid.LONG
+                    Alert.alert(
+                        'Network error',
+                        'Failed to fetch songs. Songs may be out of date!'
                     );
                 })
                 .finally(() => setLoading(false));
         };
-    useEffect(() => {
-        fetchSongs();
-    }, []);
     return {
         loading: loading,
         songs: songs,
