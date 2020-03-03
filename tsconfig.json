@@ -57,7 +57,11 @@
         // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     },
     "moduleResolution": "node",
-    "baseUrl": "src",
+    "baseUrl": "./src",
+    "paths": {
+        "@types/*": ["types/*"],
+        "@assets/*": ["../assets/*"]
+    },
     "exclude": [
         "node_modules",
         "babel.config.js",

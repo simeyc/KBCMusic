@@ -15,4 +15,5 @@ export interface SongsController {
     loading: boolean;
     songs: SongsDB;
     fetchSongs: () => Promise<void>;
+    loadSongs: () => Promise<boolean>;
 }

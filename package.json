@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.8.0",
-    "lodash.debounce": "^4.0.8",
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-bootsplash": "^1.2.1",
-    "react-native-ionicons": "^4.6.3"
+    "react-native-ionicons": "^4.6.3",
+    "use-debounce": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

@@ -1,16 +1,21 @@
 import React, { FC, useEffect } from 'react';
-import SongsList from './components/SongsList';
+import SongsListPage from './components/SongsListPage';
 import useSongs from './components/useSongs';
 import RNBootSplash from 'react-native-bootsplash';
 
 const App: FC = () => {
     const songsController = useSongs();
     useEffect(() => {
+        const hideSplash = () => RNBootSplash.hide({ duration: 250 });
+        // persist splash until after fetch if storage empty
         songsController
-            .fetchSongs()
-            .finally(() => RNBootSplash.hide({ duration: 250 }));
+            .loadSongs()
+            .then(result => result && hideSplash())
+            .finally(() =>
+                songsController.fetchSongs().finally(() => hideSplash())
+            );
     }, []);
-    return <SongsList songsController={songsController} />;
+    return <SongsListPage songsController={songsController} />;
 };
 
 export default App;

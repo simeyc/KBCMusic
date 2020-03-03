@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { SongData } from '../types/SongData';
+import { SongData } from '../types';
 import { colors, fontSizes } from '../constants';
 
 interface SongItemProps {
