@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import { SongsDB } from '../types';
 import SongsList from './SongsList';
 import { colors } from '../constants';
+import escaperegexp from 'lodash.escaperegexp';
 
 interface SearchModalProps {
     songs: SongsDB;
@@ -19,7 +20,12 @@ const SearchModal: FC<SearchModalProps> = ({ songs, onClose }) => {
                 const filterRegex = new RegExp(
                         `(^|[ -])${text
                             .split(/[ -]/)
-                            .map(word => word.split('').join('[^a-zA-Z0-9 -]*'))
+                            .map(word =>
+                                word
+                                    .split('')
+                                    .map(char => escaperegexp(char))
+                                    .join('[^a-zA-Z0-9 -]*')
+                            )
                             .join('[^a-zA-Z0-9 -]*[ \\-][^a-zA-Z0-9 -]*')}`,
                         'i'
                     ),

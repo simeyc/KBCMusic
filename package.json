@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.8.0",
+    "lodash.escaperegexp": "^4.1.2",
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-bootsplash": "^1.2.1",
@@ -21,7 +22,7 @@
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
     "@types/jest": "^24.0.18",
-    "@types/lodash.debounce": "^4.0.6",
+    "@types/lodash.escaperegexp": "^4.1.6",
     "@types/react-native": "^0.60.21",
     "@types/react-test-renderer": "16.9.0",
     "babel-jest": "^24.9.0",
