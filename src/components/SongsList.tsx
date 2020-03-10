@@ -5,10 +5,12 @@ import {
     TouchableNativeFeedback,
     Text,
     Clipboard,
-    ToastAndroid
+    ToastAndroid,
+    RefreshControl
 } from 'react-native';
+import Icon from 'react-native-ionicons';
 import SongItem from './SongItem';
-import { colors, fontSizes } from '../constants';
+import { colors, fontSizes, HEADERBAR_HEIGHT } from '../constants';
 import { SongsDB } from '../types';
 import SeparatorLine from './SeparatorLine';
 import PlaceholderView from './PlaceholderView';
@@ -16,24 +18,40 @@ import PlaceholderView from './PlaceholderView';
 interface SongsListProps {
     songs: SongsDB;
     filter?: string;
+    loading?: boolean;
+    onRefresh?: () => void;
 }
 
-const SongsList: FC<SongsListProps> = ({ songs, filter }) => {
-    const listRef = useRef(null);
+const SongsList: FC<SongsListProps> = ({
+    songs,
+    filter,
+    loading,
+    onRefresh
+}) => {
+    const listRef = useRef(null),
+        scrollToTop = () => {
+            if (songs.length > 0 && !!listRef.current) {
+                listRef.current.scrollToLocation({
+                    sectionIndex: 0,
+                    itemIndex: 0
+                });
+            }
+        };
 
-    useEffect(() => {
-        if (songs.length > 0 && !!listRef.current) {
-            listRef.current.scrollToLocation({
-                sectionIndex: 0,
-                itemIndex: 0
-            });
-        }
-    }, [songs]);
+    useEffect(scrollToTop, [songs]);
 
     return songs.length > 0 ? (
         <SectionList
             ref={listRef}
-            //refreshing={songsController.loading}
+            refreshControl={
+                <RefreshControl
+                    refreshing={!!loading}
+                    colors={[colors.RED]}
+                    progressBackgroundColor={colors.VERY_LIGHT_GREY}
+                    progressViewOffset={HEADERBAR_HEIGHT}
+                    onRefresh={onRefresh}
+                />
+            }
             renderItem={({ item, section }) => (
                 <TouchableNativeFeedback
                     background={TouchableNativeFeedback.Ripple(
@@ -56,20 +74,42 @@ const SongsList: FC<SongsListProps> = ({ songs, filter }) => {
                 </TouchableNativeFeedback>
             )}
             renderSectionHeader={({ section: { title, data } }) => (
-                <Text
+                <View
                     style={{
-                        fontWeight: 'bold',
-                        fontSize: fontSizes.MEDIUM,
+                        flex: 1,
+                        flexDirection: 'row',
                         backgroundColor: colors.LIGHT_GREY,
-                        color: colors.GREY,
-                        padding: 5,
-                        paddingLeft: 10
+                        alignItems: 'center'
                     }}>
-                    {!filter
-                        ? title
-                        : `${title} (${data.length.toString()} result` +
-                          (data.length === 1 ? ')' : 's)')}
-                </Text>
+                    <Text
+                        style={{
+                            fontWeight: 'bold',
+                            fontSize: fontSizes.MEDIUM,
+                            color: colors.GREY,
+                            padding: 5,
+                            paddingLeft: 10,
+                            flex: 1
+                        }}>
+                        {!filter
+                            ? title
+                            : `${title} (${data.length.toString()} result` +
+                              (data.length === 1 ? ')' : 's)')}
+                    </Text>
+                    <TouchableNativeFeedback
+                        background={TouchableNativeFeedback.Ripple(
+                            colors.WHITE,
+                            true
+                        )}
+                        onPress={scrollToTop}>
+                        <View style={{ marginRight: 10 }}>
+                            <Icon
+                                name="md-arrow-dropup"
+                                size={fontSizes.LARGE}
+                                color={colors.GREY}
+                            />
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
             )}
             sections={songs}
             keyExtractor={item => String(item.key)}

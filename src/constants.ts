@@ -21,3 +21,5 @@ export enum fontSizes {
 export enum storageKeys {
     SONGS_DB = '@storageKey0'
 }
+
+export const HEADERBAR_HEIGHT = 52;

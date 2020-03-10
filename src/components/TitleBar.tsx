@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
+import { Text, TouchableNativeFeedback, View } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { colors, fontSizes } from '../constants';
 import HeaderBar from './HeaderBar';
@@ -7,7 +7,7 @@ import HeaderBar from './HeaderBar';
 interface TitleBarAction {
     name: string;
     icon: string;
-    callback(): void;
+    onClick?: () => void;
 }
 
 interface TitleBarProps {
@@ -17,12 +17,20 @@ interface TitleBarProps {
 
 const TitleBar: FC<TitleBarProps> = ({ title, actions = [] }) => (
     <HeaderBar>
-        <Text style={styles.headerText}>{title}</Text>
-        {actions.map(({ name, icon, callback }) => (
+        <Text
+            style={{
+                flex: 1,
+                color: colors.WHITE,
+                fontWeight: 'bold',
+                fontSize: fontSizes.LARGE
+            }}>
+            {title}
+        </Text>
+        {actions.map(({ name, icon, onClick }) => (
             <TouchableNativeFeedback
                 key={name}
                 background={TouchableNativeFeedback.Ripple(colors.WHITE, true)}
-                onPress={callback}>
+                onPress={onClick}>
                 <View style={{ marginLeft: 20 }}>
                     <Icon
                         name={icon}
@@ -34,14 +42,5 @@ const TitleBar: FC<TitleBarProps> = ({ title, actions = [] }) => (
         ))}
     </HeaderBar>
 );
-
-const styles = StyleSheet.create({
-    headerText: {
-        flex: 1,
-        color: colors.WHITE,
-        fontWeight: 'bold',
-        fontSize: fontSizes.LARGE
-    }
-});
 
 export default TitleBar;

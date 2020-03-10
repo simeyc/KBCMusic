@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View, StatusBar } from 'react-native';
-import { colors } from '../constants';
+import { colors, HEADERBAR_HEIGHT } from '../constants';
 
 const HeaderBar: FC = ({ children }) => (
     <>
@@ -12,8 +12,8 @@ const HeaderBar: FC = ({ children }) => (
                 backgroundColor: colors.RED,
                 alignItems: 'center',
                 padding: 10,
-                minHeight: 52,
-                maxHeight: 52
+                minHeight: HEADERBAR_HEIGHT,
+                maxHeight: HEADERBAR_HEIGHT
             }}>
             {children}
         </View>

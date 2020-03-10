@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import SongsListPage from './components/SongsListPage';
-import useSongs from './components/useSongs';
+import useSongs from './hooks/useSongs';
 import RNBootSplash from 'react-native-bootsplash';
 
 const App: FC = () => {
