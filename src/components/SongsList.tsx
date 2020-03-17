@@ -1,11 +1,9 @@
 import React, { FC, useRef, useEffect } from 'react';
 import {
     SectionList,
-    TouchableNativeFeedback,
     Clipboard,
     ToastAndroid,
-    RefreshControl,
-    View
+    RefreshControl
 } from 'react-native';
 import SongItem from './SongItem';
 import { useComponentHeights } from './ComponentHeights';
@@ -14,6 +12,7 @@ import { SongsDB } from '../types';
 import SeparatorLine from './SeparatorLine';
 import PlaceholderView from './PlaceholderView';
 import SectionHeader from './SectionHeader';
+import LoadingSpinner from './LoadingSpinner';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
 
 interface SongsListProps {
@@ -48,57 +47,61 @@ const SongsList: FC<SongsListProps> = ({
                 componentHeights.sectionHeader + componentHeights.separatorLine
         });
 
-    console.log('componentHeights:', componentHeights);
-
     useEffect(scrollToTop, [songs]);
 
     return songs.length > 0 ? (
-        <SectionList
-            ref={listRef}
-            refreshControl={
-                <RefreshControl
-                    refreshing={!!loading}
-                    colors={[colors.RED]}
-                    progressBackgroundColor={colors.VERY_LIGHT_GREY}
-                    progressViewOffset={componentHeights.titleBar}
-                    onRefresh={onRefresh}
-                />
-            }
-            renderItem={({ item, section }) => (
-                <SongItem
-                    data={item}
-                    filter={filter}
-                    onPress={() => {
-                        Clipboard.setString(
-                            `*${section.titleAbbr} ${item.number.toString()}* ${
-                                item.title
-                            }`
-                        );
-                        ToastAndroid.show(
-                            'Song copied to clipboard',
-                            ToastAndroid.SHORT
-                        );
-                    }}
-                />
-            )}
-            renderSectionHeader={({ section: { title, data } }) => (
-                <SectionHeader
-                    title={title}
-                    data={data}
-                    showNumResults={!!filter}
-                />
-            )}
-            sections={songs}
-            keyExtractor={item => String(item.key)}
-            ItemSeparatorComponent={SeparatorLine}
-            ListFooterComponent={SeparatorLine}
-            stickySectionHeadersEnabled={true}
-            getItemLayout={getItemLayout}
-            //initialNumToRender={50}
-            //maxToRenderPerBatch={200}
-            //windowSize={41}
-            //updateCellsBatchingPeriod={20}
-        />
+        <>
+            {songs.map(list => list.data.length).reduce((a, b) => a + b, 0) >
+                50 && <LoadingSpinner />}
+            <SectionList
+                ref={listRef}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={!!loading}
+                        colors={[colors.RED]}
+                        progressBackgroundColor={colors.VERY_LIGHT_GREY}
+                        progressViewOffset={componentHeights.titleBar}
+                        onRefresh={onRefresh}
+                    />
+                }
+                renderItem={({ item, section }) => (
+                    <SongItem
+                        data={item}
+                        filter={filter}
+                        onPress={() => {
+                            Clipboard.setString(
+                                `*${
+                                    section.titleAbbr
+                                } ${item.number.toString()}* ${item.title}`
+                            );
+                            ToastAndroid.show(
+                                'Song copied to clipboard',
+                                ToastAndroid.SHORT
+                            );
+                        }}
+                    />
+                )}
+                renderSectionHeader={({ section: { title, data } }) => (
+                    <SectionHeader
+                        title={title}
+                        data={data}
+                        showNumResults={!!filter}
+                    />
+                )}
+                sections={songs}
+                keyExtractor={item => String(item.key)}
+                ItemSeparatorComponent={SeparatorLine}
+                ListFooterComponent={SeparatorLine}
+                stickySectionHeadersEnabled={true}
+                getItemLayout={getItemLayout}
+                keyboardDismissMode="on-drag" // TODO: not working
+                keyboardShouldPersistTaps="handled"
+                initialNumToRender={50}
+                maxToRenderPerBatch={50}
+                //windowSize={101}
+                //updateCellsBatchingPeriod={20}
+            />
+        </>
     ) : !!filter ? (
         <PlaceholderView text="No results found" iconName="md-sad" />
     ) : null;
