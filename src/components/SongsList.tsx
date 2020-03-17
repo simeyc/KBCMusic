@@ -1,19 +1,20 @@
 import React, { FC, useRef, useEffect } from 'react';
 import {
-    View,
     SectionList,
     TouchableNativeFeedback,
-    Text,
     Clipboard,
     ToastAndroid,
-    RefreshControl
+    RefreshControl,
+    View
 } from 'react-native';
-import Icon from 'react-native-ionicons';
 import SongItem from './SongItem';
-import { colors, fontSizes, HEADERBAR_HEIGHT } from '../constants';
+import { useComponentHeights } from './ComponentHeights';
+import { colors } from '../constants';
 import { SongsDB } from '../types';
 import SeparatorLine from './SeparatorLine';
 import PlaceholderView from './PlaceholderView';
+import SectionHeader from './SectionHeader';
+import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
 
 interface SongsListProps {
     songs: SongsDB;
@@ -29,6 +30,7 @@ const SongsList: FC<SongsListProps> = ({
     onRefresh
 }) => {
     const listRef = useRef(null),
+        componentHeights = useComponentHeights(),
         scrollToTop = () => {
             if (songs.length > 0 && !!listRef.current) {
                 listRef.current.scrollToLocation({
@@ -36,7 +38,17 @@ const SongsList: FC<SongsListProps> = ({
                     itemIndex: 0
                 });
             }
-        };
+        },
+        getItemLayout = sectionListGetItemLayout({
+            getItemHeight: () => componentHeights.songItem,
+            getSeparatorHeight: () => componentHeights.separatorLine,
+            /* SectionHeader unstable on fast scroll without added SeparatorLine
+             * height for unknown reason */
+            getSectionHeaderHeight: () =>
+                componentHeights.sectionHeader + componentHeights.separatorLine
+        });
+
+    console.log('componentHeights:', componentHeights);
 
     useEffect(scrollToTop, [songs]);
 
@@ -48,15 +60,14 @@ const SongsList: FC<SongsListProps> = ({
                     refreshing={!!loading}
                     colors={[colors.RED]}
                     progressBackgroundColor={colors.VERY_LIGHT_GREY}
-                    progressViewOffset={HEADERBAR_HEIGHT}
+                    progressViewOffset={componentHeights.titleBar}
                     onRefresh={onRefresh}
                 />
             }
             renderItem={({ item, section }) => (
-                <TouchableNativeFeedback
-                    background={TouchableNativeFeedback.Ripple(
-                        colors.LIGHT_GREY
-                    )}
+                <SongItem
+                    data={item}
+                    filter={filter}
                     onPress={() => {
                         Clipboard.setString(
                             `*${section.titleAbbr} ${item.number.toString()}* ${
@@ -67,57 +78,26 @@ const SongsList: FC<SongsListProps> = ({
                             'Song copied to clipboard',
                             ToastAndroid.SHORT
                         );
-                    }}>
-                    <View style={{ backgroundColor: colors.WHITE }}>
-                        <SongItem data={item} filter={filter} />
-                    </View>
-                </TouchableNativeFeedback>
+                    }}
+                />
             )}
             renderSectionHeader={({ section: { title, data } }) => (
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        backgroundColor: colors.LIGHT_GREY,
-                        alignItems: 'center'
-                    }}>
-                    <Text
-                        style={{
-                            fontWeight: 'bold',
-                            fontSize: fontSizes.MEDIUM,
-                            color: colors.GREY,
-                            padding: 5,
-                            paddingLeft: 10,
-                            flex: 1
-                        }}>
-                        {!filter
-                            ? title
-                            : `${title} (${data.length.toString()} result` +
-                              (data.length === 1 ? ')' : 's)')}
-                    </Text>
-                    <TouchableNativeFeedback
-                        background={TouchableNativeFeedback.Ripple(
-                            colors.WHITE,
-                            true
-                        )}
-                        onPress={scrollToTop}>
-                        <View style={{ marginRight: 10 }}>
-                            <Icon
-                                name="md-arrow-dropup"
-                                size={fontSizes.LARGE}
-                                color={colors.GREY}
-                            />
-                        </View>
-                    </TouchableNativeFeedback>
-                </View>
+                <SectionHeader
+                    title={title}
+                    data={data}
+                    showNumResults={!!filter}
+                />
             )}
             sections={songs}
             keyExtractor={item => String(item.key)}
             ItemSeparatorComponent={SeparatorLine}
-            {...(songs.length > 0 && {
-                ListFooterComponent: SeparatorLine
-            })}
+            ListFooterComponent={SeparatorLine}
             stickySectionHeadersEnabled={true}
+            getItemLayout={getItemLayout}
+            //initialNumToRender={50}
+            //maxToRenderPerBatch={200}
+            //windowSize={41}
+            //updateCellsBatchingPeriod={20}
         />
     ) : !!filter ? (
         <PlaceholderView text="No results found" iconName="md-sad" />

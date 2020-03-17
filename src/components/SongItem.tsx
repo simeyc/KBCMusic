@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import { SongData } from '../types';
 import { colors, fontSizes } from '../constants';
 
 interface SongItemProps {
     data: SongData;
     filter?: string;
+    onPress?: () => void;
 }
 
-const SongItem: FC<SongItemProps> = ({ data, filter }) => {
+const SongItem: FC<SongItemProps> = ({ data, filter, onPress }) => {
     const { number, title, altTitle } = data,
         filterRegex = !!filter
             ? new RegExp(
@@ -49,31 +50,37 @@ const SongItem: FC<SongItemProps> = ({ data, filter }) => {
         titleContent = getTextContent(title);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.number}>
-                {!!filter && filter === number.toString() ? (
-                    <Text style={{ backgroundColor: colors.HIGHLIGHT }}>
-                        {number}
+        <TouchableNativeFeedback
+            background={TouchableNativeFeedback.Ripple(colors.LIGHT_GREY)}
+            onPress={onPress}>
+            <View style={{ backgroundColor: colors.WHITE }}>
+                <View style={styles.container}>
+                    <Text style={styles.number}>
+                        {!!filter && filter === number.toString() ? (
+                            <Text style={{ backgroundColor: colors.HIGHLIGHT }}>
+                                {number}
+                            </Text>
+                        ) : (
+                            number
+                        )}
                     </Text>
-                ) : (
-                    number
-                )}
-            </Text>
-            {altTitle ? (
-                <View style={styles.titleContainer}>
-                    <Text numberOfLines={1} style={styles.title}>
-                        {titleContent}
-                    </Text>
-                    <Text numberOfLines={1} style={styles.altTitle}>
-                        {getTextContent(altTitle)}
-                    </Text>
+                    {altTitle ? (
+                        <View style={styles.titleContainer}>
+                            <Text numberOfLines={1} style={styles.title}>
+                                {titleContent}
+                            </Text>
+                            <Text numberOfLines={1} style={styles.altTitle}>
+                                {getTextContent(altTitle)}
+                            </Text>
+                        </View>
+                    ) : (
+                        <Text numberOfLines={2} style={styles.title}>
+                            {!!filter ? titleContent : title}
+                        </Text>
+                    )}
                 </View>
-            ) : (
-                <Text numberOfLines={2} style={styles.title}>
-                    {!!filter ? titleContent : title}
-                </Text>
-            )}
-        </View>
+            </View>
+        </TouchableNativeFeedback>
     );
 };
 
@@ -81,7 +88,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        minHeight: 54
+        height: 54
     },
     number: {
         flex: 0,

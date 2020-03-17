@@ -5,11 +5,13 @@ export type SongData = {
     altTitle?: string;
 };
 
-export type SongsDB = {
+export type SongsCollection = {
     title: string;
     titleAbbr: string;
     data: SongData[];
-}[];
+};
+
+export type SongsDB = SongsCollection[];
 
 export interface SongsController {
     loading: boolean;
