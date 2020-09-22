@@ -23,7 +23,7 @@ interface SongsListProps {
     onRefresh?: () => void;
 }
 
-const SongsList: FC<SongsListProps> = ({
+class SongsList: FC<SongsListProps> = ({
     songs,
     filter,
     loading,

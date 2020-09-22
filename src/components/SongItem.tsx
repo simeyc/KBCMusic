@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import { SongData } from '../types';
 import { colors, fontSizes } from '../constants';
+import SeparatorLine from './SeparatorLine';
 
 interface SongItemProps {
     data: SongData;
@@ -79,6 +80,7 @@ const SongItem: FC<SongItemProps> = ({ data, filter, onPress }) => {
                         </Text>
                     )}
                 </View>
+                {/*<SeparatorLine />*/}
             </View>
         </TouchableNativeFeedback>
     );
