@@ -21,3 +21,6 @@ export enum fontSizes {
 export enum storageKeys {
     SONGS_DB = '@storageKey0'
 }
+
+export const SONGS_LIST_URL =
+    'https://dl.dropbox.com/s/wqvqabiohovyhxi/songsDB.json';

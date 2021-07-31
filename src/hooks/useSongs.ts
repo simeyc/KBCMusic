@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SongsController, SongsDB } from '../types';
-import { storageKeys } from '../constants';
+import { storageKeys, SONGS_LIST_URL } from '../constants';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ToastAndroid, Alert } from 'react-native';
 
@@ -9,9 +9,7 @@ const useSongs: () => SongsController = () => {
         [songs, setSongs] = useState<SongsDB>([]),
         fetchSongs = () => {
             setLoading(true);
-            return fetch(
-                'https://github.com/simeyc/KBCMusic/raw/master/public/api_v1/songsDB.json'
-            )
+            return fetch(SONGS_LIST_URL)
                 .then(response => response.json())
                 .then(data => {
                     const newData = JSON.stringify(data);

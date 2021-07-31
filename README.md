@@ -1,2 +1,3 @@
 # KBCMusic
-React Native Andriod app. Songs database for Knockconny Baptist Church.
+
+React Native Android app. Songs database for Knockconny Baptist Church.
