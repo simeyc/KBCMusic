@@ -9,6 +9,7 @@
         "test": "jest"
     },
     "dependencies": {
+        "@react-native-clipboard/clipboard": "^1.8.4",
         "@react-native-community/async-storage": "^1.8.0",
         "lodash.escaperegexp": "^4.1.2",
         "react": "16.9.0",

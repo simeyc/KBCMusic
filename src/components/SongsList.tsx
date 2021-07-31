@@ -1,10 +1,5 @@
 import React, { FC, useRef, useEffect } from 'react';
-import {
-    SectionList,
-    Clipboard,
-    ToastAndroid,
-    RefreshControl
-} from 'react-native';
+import { SectionList, ToastAndroid, RefreshControl } from 'react-native';
 import SongItem from './SongItem';
 import { useComponentHeights } from './ComponentHeights';
 import { colors } from '../constants';
@@ -15,6 +10,7 @@ import SectionHeader from './SectionHeader';
 import LoadingSpinner from './LoadingSpinner';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
 import FloatingButton from './FloatingButton';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 interface SongsListProps {
     songs: SongsDB;
