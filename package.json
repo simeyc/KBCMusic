@@ -6,33 +6,34 @@
         "android": "react-native run-android",
         "ios": "react-native run-ios",
         "start": "react-native start",
-        "test": "jest"
+        "test": "jest",
+        "build": "cd ./android && ./gradlew bundleRelease",
+        "release": "npx react-native run-android --variant=release"
     },
     "dependencies": {
-        "@react-native-clipboard/clipboard": "^1.8.4",
-        "@react-native-community/async-storage": "^1.8.0",
-        "lodash.escaperegexp": "^4.1.2",
+        "@react-native-clipboard/clipboard": "1.8.4",
+        "@react-native-community/async-storage": "1.8.0",
+        "lodash.escaperegexp": "4.1.2",
         "react": "16.9.0",
         "react-native": "0.62.3",
-        "react-native-bootsplash": "^1.2.1",
-        "react-native-floating-action": "^1.20.0",
-        "react-native-ionicons": "^4.6.3",
-        "react-native-section-list-get-item-layout": "^2.2.3",
-        "use-debounce": "^3.3.0"
+        "react-native-bootsplash": "1.2.1",
+        "react-native-ionicons": "4.6.3",
+        "react-native-section-list-get-item-layout": "2.2.3",
+        "use-debounce": "3.3.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.6.2",
-        "@babel/runtime": "^7.6.2",
-        "@react-native-community/eslint-config": "^0.0.5",
-        "@types/jest": "^24.0.18",
-        "@types/lodash.escaperegexp": "^4.1.6",
-        "@types/react-native": "^0.60.21",
+        "@babel/core": "7.6.4",
+        "@babel/runtime": "7.6.3",
+        "@react-native-community/eslint-config": "0.0.5",
+        "@types/jest": "24.0.20",
+        "@types/lodash.escaperegexp": "4.1.6",
+        "@types/react-native": "0.60.21",
         "@types/react-test-renderer": "16.9.0",
-        "babel-jest": "^24.9.0",
-        "jest": "^24.9.0",
-        "metro-react-native-babel-preset": "^0.56.0",
+        "babel-jest": "24.9.0",
+        "jest": "24.9.0",
+        "metro-react-native-babel-preset": "0.59.0",
         "react-test-renderer": "16.9.0",
-        "typescript": "^3.8.3"
+        "typescript": "3.9.7"
     },
     "jest": {
         "preset": "react-native",
